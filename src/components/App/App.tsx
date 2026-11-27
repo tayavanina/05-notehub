@@ -27,6 +27,7 @@ function App() {
   });
 
   const handleSearch = useDebouncedCallback((search: string) => {
+    setPage(1);
     setSearch(search);
   }, 300);
 

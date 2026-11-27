@@ -30,7 +30,6 @@ export const fetchNotes = async ({
       },
     },
   );
-  console.log("Відповідь сервера:", request.data);
   return request.data;
 };
 
@@ -47,10 +46,14 @@ export const createNote = async (payload: CreateNoteType): Promise<Note> => {
   return data;
 };
 
-export const deleteNote = async (noteId: Note["id"]): Promise<void> => {
-  await axios.delete(`https://notehub-public.goit.study/api/notes/${noteId}`, {
-    headers: {
-      Authorization: `Bearer ${myKey}`,
+export const deleteNote = async (noteId: Note["id"]): Promise<Note> => {
+  const { data } = await axios.delete<Note>(
+    `https://notehub-public.goit.study/api/notes/${noteId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${myKey}`,
+      },
     },
-  });
+  );
+  return data;
 };

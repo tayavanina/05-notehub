@@ -9,12 +9,12 @@ import * as Yup from "yup";
 const Schema = Yup.object().shape({
   title: Yup.string()
     .min(3, "Must be at least 3 characters long")
-    .max(30, "Title is too long")
+    .max(50, "Title is too long")
     .required("Title is required"),
   content: Yup.string().max(500, "Content is too long"),
-  tag: Yup.string<
-    "Todo" | "Work" | "Personal" | "Meeting" | "Shopping"
-  >().defined(),
+  tag: Yup.string()
+    .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"], "Invalid tag")
+    .required("Tag is required"),
 });
 
 interface NoteFormProps {
@@ -26,7 +26,7 @@ const initialValues: CreateNoteType = {
   content: "",
   tag: "Todo",
 };
-export default function NoteForm({ onClose, onSuccess }: NoteFormProps) {
+export default function NoteForm({ onClose }: NoteFormProps) {
   const fieldId = useId();
   const queryClient = useQueryClient();
 
@@ -34,7 +34,7 @@ export default function NoteForm({ onClose, onSuccess }: NoteFormProps) {
     mutationFn: createNote,
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
-      onSuccess();
+      onClose();
     },
   });
 
