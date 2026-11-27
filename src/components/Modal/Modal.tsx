@@ -15,10 +15,13 @@ export function Modal({ children, onClose }: ModalProps) {
       }
     };
 
+    const prevOverflow = document.body.style.overflow;
     document.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
+
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = prevOverflow;
     };
   }, [onClose]);
   return createPortal(
